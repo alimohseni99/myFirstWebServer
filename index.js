@@ -3,7 +3,7 @@ const http = require('http');
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-typw', 'text/plain');
-  res.end('hello fellow developer!');
+  res.end('<h1>Hello fellow developer!</h1>');
 });
 
 const hostName = 'localhost';
