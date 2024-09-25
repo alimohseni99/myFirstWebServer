@@ -14,13 +14,14 @@ const db = [
   },
 ];
 
-app.get('/', (req, res) => {
-  const devs = {
-    id: 1,
-    name: 'Ali Mohseni',
-    email: 'ali.mohseni@appliedtechnology.se',
-  };
-  res.status(201).setHeader('Location', `/api/developers/1`).json(db[1]);
+app.get('/api/developers/:id', (req, res) => {
+  for (let i = 0; i < db.length; i++) {
+    if (db[i].id == req.params.id) {
+      res.json(db[i]);
+      return;
+    }
+  }
+  res.status(404).end();
 });
 
 const port = 3000;
