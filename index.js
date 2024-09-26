@@ -23,8 +23,18 @@ app.get('/api/developers/:id', (req, res) => {
 });
 
 app.post('/api/developers/', (req, res) => {
-  console.log(req.body);
-  res.status(201).end();
+  const newDeveloper = {
+    id: db.length + 1,
+    name: req.body.name,
+    email: req.body.email,
+  };
+
+  db.push(newDeveloper);
+
+  res
+    .status(201)
+    .setHeader('location', `/api/developers/${newDeveloper.id}`)
+    .json(newDeveloper);
 });
 
 const port = 3000;
