@@ -5,16 +5,20 @@ const db = [
   {
     id: 1,
     name: 'Ali Mohseni',
-    email: 'ali.mohseni@appliedtechnology.se',
+    email: 'ali.mohseni@appliedtechonology.se',
   },
   {
     id: 2,
-    name: 'Mohseni Ali',
-    email: 'testingSomething@nothing.com',
+    name: 'Beatrice Dev',
+    email: 'bea@salt.dev',
   },
 ];
 
 app.use(express.json());
+
+app.get('/api/developers/', (req, res) => {
+  res.json(db);
+});
 
 app.get('/api/developers/:id', (req, res) => {
   const dev = db.find((dev) => dev.id == req.params.id);
@@ -37,8 +41,17 @@ app.post('/api/developers/', (req, res) => {
     .json(newDeveloper);
 });
 
+app.delete('/api/developers/:id', (req, res) => {
+  db.splice(req.params.id - 1, 1);
+  res.sendStatus(204).end();
+});
+
 const port = 3000;
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
+
+module.exports = {
+  app,
+};
