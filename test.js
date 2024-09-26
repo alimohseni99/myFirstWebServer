@@ -29,6 +29,18 @@ describe('developer API should have endpoints to', () => {
       })
       .expect(200, done);
   });
+  it('delete a developer', function (done) {
+    const api = require('./api.js');
+
+    request(api.app)
+      .delete('/api/developers/2')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        assert.strictEqual(res.body.length, 2);
+      })
+      .expect(200, done);
+  });
 
   it('post a new developer', function (done) {
     const api = require('./api.js');
@@ -43,5 +55,21 @@ describe('developer API should have endpoints to', () => {
         assert.strictEqual(res.body.name, 'John');
       })
       .expect(201, done);
+  });
+  it('patch a developer', function (done) {
+    const api = require('./api.js');
+
+    request(api.app)
+      .patch('/api/developers/1')
+      .set('Accept', 'application/json')
+      .send({ name: 'Stefan', email: 'steeeefan@gmail.co' })
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        assert.strictEqual(res.body.name, 'Stefan');
+      })
+      .expect((res) => {
+        assert.strictEqual(res.body.email, 'steeeefan@gmail.co');
+      })
+      .expect(200, done);
   });
 });

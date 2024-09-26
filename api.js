@@ -47,20 +47,25 @@ app.post('/api/developers/', (req, res) => {
 });
 
 app.delete('/api/developers/:id', (req, res) => {
-  db.splice(req.params.id - 1, 1);
-  res.sendStatus(204).end();
+  const dev = db.find((dev) => dev.id == req.params.id);
+  const devIndex = db.indexOf(dev);
+
+  if (!dev) {
+    return res.status(404).end();
+  } else {
+    db.splice(devIndex, 1);
+    return res.json(db);
+  }
 });
 
 //curl -X PATCH http://localhost:3000/api/developers/1-H "Content-Type: application/json" -d '{"name": "Stefan", "email": "stafasson@gmail.com"}'
 app.patch('/api/developers/:id', (req, res) => {
   const dev = db.find((dev) => dev.id == req.params.id);
+  const { name, email } = req.body;
 
   if (!dev) {
     return res.status(404).end();
   }
-
-  const { name, email } = req.body;
-
   if (!name || !email) {
     return res.status(400).send('name and email are required');
   }
@@ -68,7 +73,7 @@ app.patch('/api/developers/:id', (req, res) => {
   dev.name = name;
   dev.email = email;
 
-  return res.json(dev);
+  return res.json(dev).status(200).end();
 });
 
 module.exports = { app };
