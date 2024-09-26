@@ -12,6 +12,11 @@ const db = [
     name: 'Beatrice Dev',
     email: 'bea@salt.dev',
   },
+  {
+    id: 3,
+    name: 'Daniel KHormos',
+    email: 'Daniel.Khormos@appliedtechnology.se',
+  },
 ];
 
 app.use(express.json());
@@ -46,6 +51,24 @@ app.delete('/api/developers/:id', (req, res) => {
   res.sendStatus(204).end();
 });
 
-module.exports = {
-  app,
-};
+//curl -X PATCH http://localhost:3000/api/developers/1-H "Content-Type: application/json" -d '{"name": "Stefan", "email": "stafasson@gmail.com"}'
+app.patch('/api/developers/:id', (req, res) => {
+  const dev = db.find((dev) => dev.id == req.params.id);
+
+  if (!dev) {
+    return res.status(404).end();
+  }
+
+  const { name, email } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).send('name and email are required');
+  }
+
+  dev.name = name;
+  dev.email = email;
+
+  return res.json(dev);
+});
+
+module.exports = { app };

@@ -12,7 +12,7 @@ describe('developer API should have endpoints to', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect((res) => {
-        assert.strictEqual(res.body.length, 2);
+        assert.strictEqual(res.body.length, 3);
       })
       .expect(200, done);
   });
@@ -28,5 +28,20 @@ describe('developer API should have endpoints to', () => {
         assert.strictEqual(res.body.id, 1);
       })
       .expect(200, done);
+  });
+
+  it('post a new developer', function (done) {
+    const api = require('./api.js');
+
+    request(api.app)
+      .post('/api/developers/')
+      .set('Accept', 'application/json')
+      .send({ name: 'John', email: 'john@salt.dev' })
+      .expect('Content-Type', /json/)
+      .expect('location', /\/api\/developers\//)
+      .expect((res) => {
+        assert.strictEqual(res.body.name, 'John');
+      })
+      .expect(201, done);
   });
 });
